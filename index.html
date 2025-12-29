@@ -1,310 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Wild Moloch Factions</title>
+<meta charset="UTF-8">
+<title>Wild Moloch Factions</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="logo.png">
 
-    <!-- Favicon -->
-    <link rel="icon" href="logo.png">
+<style>
+:root {
+    --red:#ff3333;
+    --dark:#050505;
+    --deep:#120000;
+}
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Orbitron', Arial, sans-serif;
-            background: linear-gradient(180deg, #050505, #1a0000);
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
+* { box-sizing:border-box; }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(circle, rgba(255,60,0,0.15) 1px, transparent 1px);
-            background-size: 80px 80px;
-            animation: embers 60s linear infinite;
-            pointer-events: none;
-        }
+body {
+    margin:0;
+    font-family:'Orbitron',Arial,sans-serif;
+    background:linear-gradient(180deg,#050505,#1a0000);
+    color:#e0e0e0;
+    overflow-x:hidden;
+}
 
-        @keyframes embers {
-            from { background-position: 0 0; }
-            to { background-position: 0 -1000px; }
-        }
+/* 🔥 FIRE PARTICLES */
+body::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle,rgba(255,60,0,.15) 1px,transparent 1px);
+    background-size:80px 80px;
+    animation:embers 60s linear infinite;
+    pointer-events:none;
+    z-index:0;
+}
+@keyframes embers { to{background-position:0 -1200px;} }
 
-        header {
-            text-align: center;
-            padding: 90px 20px;
-            background: radial-gradient(circle, #2a0000, #000);
-            border-bottom: 3px solid #550000;
-            position: relative;
-        }
+/* 🌫️ SMOKE */
+body::after {
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle,rgba(255,255,255,.04),transparent 65%);
+    animation:smoke 25s ease-in-out infinite;
+    pointer-events:none;
+    z-index:1;
+}
+@keyframes smoke { 50%{opacity:.3;} }
 
-        header img.logo {
-            width: 100px;
-            position: absolute;
-            left: 20px;
-            top: 20px;
-        }
+/* 🎬 INTRO SPLASH */
+#intro {
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    animation:introFade 3s forwards 2s;
+}
+#intro h1 {
+    color:var(--red);
+    font-size:4em;
+    text-shadow:0 0 40px red;
+}
+@keyframes introFade {
+    to { opacity:0; visibility:hidden; }
+}
 
-        header h1 {
-            font-size: 3.8em;
-            color: #ff3333;
-            text-shadow: 0 0 25px #ff0000;
-            letter-spacing: 3px;
-        }
+/* HEADER */
+header {
+    text-align:center;
+    padding:120px 20px;
+    background:radial-gradient(circle,#2a0000,#000);
+    border-bottom:3px solid #550000;
+    position:relative;
+    z-index:2;
+}
+header img {
+    width:110px;
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+header h1 {
+    font-size:4em;
+    color:var(--red);
+    text-shadow:0 0 35px red;
+}
+header p { color:#ccc; }
 
-        header p {
-            font-size: 1.2em;
-            color: #ccc;
-            margin-top: 10px;
-        }
+/* SECTIONS */
+section {
+    max-width:1000px;
+    margin:auto;
+    padding:70px 20px;
+    position:relative;
+    z-index:2;
+}
+h2 {
+    color:#ff4444;
+    border-bottom:2px solid #550000;
+    padding-bottom:10px;
+}
 
-        section {
-            max-width: 950px;
-            margin: auto;
-            padding: 55px 20px;
-            position: relative;
-        }
+/* BOX */
+.box {
+    background:var(--deep);
+    padding:30px;
+    border-radius:14px;
+    border:1px solid #550000;
+    box-shadow:0 0 30px rgba(255,0,0,.18);
+    margin-top:25px;
+}
 
-        section::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            background: radial-gradient(circle, rgba(255,100,0,0.02) 2px, transparent 2px);
-            background-size: 100px 100px;
-            animation: particles 80s linear infinite;
-        }
+/* SCROLL ANIMATION */
+.reveal {
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+.reveal.active {
+    opacity:1;
+    transform:none;
+}
 
-        @keyframes particles {
-            from { background-position: 0 0; }
-            to { background-position: 0 -1000px; }
-        }
+/* STATUS */
+.status.online { color:#00ff88; }
+.status.offline { color:#ff4444; }
+.status.checking { color:#ffaa00; }
 
-        h2 {
-            color: #ff4444;
-            border-bottom: 2px solid #550000;
-            padding-bottom: 10px;
-            letter-spacing: 1px;
-        }
+/* FACTION CARDS */
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+.card {
+    background:#1a0000;
+    padding:20px;
+    border:1px solid #550000;
+    border-radius:12px;
+    text-align:center;
+    transition:.3s;
+}
+.card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 0 20px rgba(255,0,0,.5);
+}
 
-        .box {
-            background: #120000;
-            padding: 28px;
-            border: 1px solid #550000;
-            border-radius: 12px;
-            margin-top: 25px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.12);
-        }
+/* TIMELINE */
+.timeline {
+    border-left:3px solid #ff3333;
+    padding-left:25px;
+}
+.timeline div {
+    margin-bottom:20px;
+}
 
-        .ip-box {
-            cursor: pointer;
-            user-select: none;
-        }
+/* SECRET LORE */
+.secret {
+    margin-top:15px;
+    color:#ff6666;
+    cursor:pointer;
+}
+.secret-content {
+    display:none;
+    margin-top:10px;
+}
 
-        .ip-box span {
-            color: #ff6666;
-        }
+/* BUTTONS */
+.buttons { display:flex; gap:15px; flex-wrap:wrap; }
+.btn {
+    background:var(--red);
+    color:white;
+    padding:14px 26px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.btn:hover { background:#ff0000; }
 
-        .status {
-            margin-top: 10px;
-            font-size: 0.95em;
-        }
+/* AUDIO */
+#audioToggle {
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#ff3333;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:50%;
+    cursor:pointer;
+    z-index:10;
+}
 
-        .online { color: #00ff88; }
-        .offline { color: #ff4444; }
+footer {
+    text-align:center;
+    padding:40px;
+    background:#000;
+    color:#666;
+}
+</style>
 
-        ul { padding-left: 22px; }
-        li { margin-bottom: 10px; }
+<script>
+const SERVER_IP="WildMolochsVille.aternos.me";
 
-        .buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
+function copyIP(){
+    navigator.clipboard.writeText(SERVER_IP);
+    alert("Server IP copied!");
+}
 
-        .btn {
-            padding: 13px 22px;
-            background: #ff3333;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-        }
+function toggleSecret(){
+    const s=document.getElementById("secretLore");
+    s.style.display = s.style.display==="block"?"none":"block";
+}
 
-        .btn:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(255,0,0,0.6);
-        }
+function toggleAudio(){
+    const a=document.getElementById("bgAudio");
+    a.paused ? a.play() : a.pause();
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            padding: 8px 12px;
-            border: 1px solid #550000;
-            text-align: center;
-        }
-
-        th { background: #2a0000; }
-
-        footer {
-            text-align: center;
-            padding: 35px;
-            background: #000;
-            color: #666;
-            font-size: 0.85em;
-        }
-
-    </style>
-
-    <script>
-        const SERVER_IP = "WildMolochsVille.aternos.me";
-
-        function copyIP() {
-            navigator.clipboard.writeText(SERVER_IP);
-            alert("Server IP copied to clipboard!");
-        }
-    </script>
+/* SCROLL REVEAL */
+window.addEventListener("scroll",()=>{
+    document.querySelectorAll(".reveal").forEach(el=>{
+        if(el.getBoundingClientRect().top < window.innerHeight-100)
+            el.classList.add("active");
+    });
+});
+</script>
 </head>
+
 <body>
 
+<div id="intro"><h1>WILD MOLOCH</h1></div>
+
+<audio id="bgAudio" loop>
+    <source src="ambient.mp3" type="audio/mpeg">
+</audio>
+<button id="audioToggle" onclick="toggleAudio()">🎵</button>
+
 <header>
-    <img class="logo" src="logo.png" alt="Wild Moloch Logo">
-    <h1>WILD MOLOCH FACTIONS</h1>
-    <p>Forge Your Power. Claim Your Dominion.</p>
+<img src="logo.png" alt="Logo">
+<h1>WILD MOLOCH FACTIONS</h1>
+<p>Forge Your Power. Claim Your Dominion.</p>
 </header>
 
-<section>
-    <h2>Server Information</h2>
-    <div class="box ip-box" onclick="copyIP()">
-        <p><strong>IP:</strong> <span>WildMolochsVille.aternos.me</span></p>
-        <p><strong>Version:</strong> Java Edition 1.21.1</p>
-        <p><strong>Gamemode:</strong> Factions</p>
-        <!-- STATIC ONLINE STATUS --> <!-- <div class="status online" id="status">● ONLINE — 1/50 players</div> = Switches = <div class="status offline" id="status">● OFFLINE — 0/50 players</div> -->
-        <div class="status online" id="status">● ONLINE — 1/50 players</div>
-        <small>Click This Box To Copy The IP</small>
-    </div>
+<section class="reveal">
+<h2>Server Information</h2>
+<div class="box" onclick="copyIP()">
+<p><strong>IP:</strong> <span style="color:#ff6666;">WildMolochsVille.aternos.me</span></p>
+<p>Version: Java 1.21.1</p>
+<div class="status online">● ONLINE — 1/50 players</div>
+<small>Click to copy IP</small>
+</div>
 </section>
 
-<section>
-    <h2>Why Play Wild Moloch?</h2>
-    <div class="box">
-        <ul>
-            <li>⚔️ Competitive, Progression-Based Factions</li>
-            <li>🔥 Raiding, Alliances, Betrayals, Domination</li>
-            <li>🛡️ Active Staff & Zero Tolerance For Cheaters</li>
-            <li>🌌 Dark Fantasy Atmosphere & Custom Balance</li>
-        </ul>
-    </div>
+<section class="reveal">
+<h2>Why Play Wild Moloch?</h2>
+<div class="box">
+<ul>
+<li>🔥 High-risk, high-reward factions</li>
+<li>⚔️ Real domination, no hand-holding</li>
+<li>🩸 Dark lore-driven progression</li>
+<li>👑 Status, fear, reputation matter</li>
+<li>🏰 Wars that shape the world</li>
+</ul>
+</div>
 </section>
 
-<section>
-    <h2>Lore of Moloch</h2>
-    <div class="box">
-        <p>
-            Long Ago, The World Shattered Under The Will Of Moloch — An Ancient Force Of
-            Fire, Chaos, & Dominion. Factions Rose From The Ashes, Each Vyig For Control
-            Of Cursed Lands Rich With Power.
-        </p>
-        <p>
-            In Wild Moloch, Strength Is Earned, Alliances Are Fragile, & Only The Ruthless
-            Rise To Legend.
-        </p>
-    </div>
+<section class="reveal">
+<h2>Factions of the Realm</h2>
+<div class="cards">
+<div class="card">🔥 Infernal Warbands</div>
+<div class="card">⚔️ Iron Dominion</div>
+<div class="card">🩸 Bloodbound</div>
+<div class="card">👁️ Ashen Order</div>
+</div>
 </section>
 
-<section>
-    <h2>Ranks & Progression!</h2>
-    <div class="box">
-        <ul>
-    <li>🔰 <strong>VIP</strong> — A Marked Soul. Basic Perks To Begin Your Ascent.</li>
+<section class="reveal">
+<h2>The Lore of Moloch</h2>
+<div class="box">
+<p>Moloch is not worshipped — he is endured.</p>
+<p>When the world burned, only the ruthless survived.</p>
 
-    <li>🛡️ <strong>VIP+</strong> — Hardened Survivor. Improved Defenses & Utility.</li>
-
-    <li>⚔️ <strong>VIP++</strong> — Seasoned Fighter. Enhanced Combat Advantages.</li>
-
-    <li>📜 <strong>Acolyte</strong> — Initiated Into Moloch’s Will. Minor Ritual Powers Unlocked.</li>
-
-    <li>🧪 <strong>Sacristan</strong> — Master Of Brews. Advanced Potion Control & Buffs.</li>
-
-    <li>💀 <strong>Fodder</strong> — Disposable Brute. Raw Strength Over Survival.</li>
-
-    <li>🔥 <strong>Inferno</strong> — Living Weapon. Fire-Forged Power & Dominance.</li>
-
-    <li>🩸 <strong>Legionnaire</strong> — Commander Of Warbands. Faction-Focused Supremacy.</li>
-
-    <li>⚒️ <strong>Warmaster</strong> — Architect of conquest. Tactical Control & Siege Power.</li>
-
-    <li>👑 <strong>Overlord</strong> — Absolute Ruler. Feared Across All Territories.</li>
-
-    <li>🛡️🔥 <strong>Praetor</strong> — Hand Of Moloch. Elite Authority & Battlefield Command.</li>
-
-    <li>🜏 <strong>Imperator</strong> — Ascended Legend. Near-Mythic Status Among Factions.</li>
-        </ul>
-    </div>
+<div class="secret" onclick="toggleSecret()">👁️ Reveal Forbidden Lore</div>
+<div class="secret-content" id="secretLore">
+<p>Moloch does not choose champions. He consumes the weak until only tyrants remain.</p>
+</div>
+</div>
 </section>
 
-<section>
-    <h2>Leaderboard</h2>
-    <div class="box">
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th>Power</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td>Strafesz</td><td>4500</td></tr>
-                <tr><td>2</td><td>Axeholez</td><td>4200</td></tr>
-                <tr><td>3</td><td>N/A</td><td>0</td></tr>
-                <tr><td>4</td><td>N/A</td><td>0</td></tr>
-                <tr><td>5</td><td>N/A</td><td>0</td></tr>
-            </tbody>
-        </table>
-        <small>Leaderboard example — update manually or integrate with server plugin</small>
-    </div>
+<section class="reveal">
+<h2>Rank Ascension</h2>
+<div class="box timeline">
+<div>🔰 VIP — Marked Initiate</div>
+<div>⚔️ Acolyte — Proven Blood</div>
+<div>🔥 Inferno — Living Weapon</div>
+<div>👑 Overlord — Absolute Ruler</div>
+<div>🜏 Imperator — Myth Made Flesh</div>
+</div>
 </section>
 
-<section>
-    <h2>Rules</h2>
-    <div class="box">
-        <ul>
-            <li>No Cheating, Hacked Clients, & Unfair Advantages!</li>
-            <li>No Duping, Exploits / Bug Abuse</li>
-            <li>Respect Staff & Players!</li>
-            <li>No Real-World Threats / Extreme Harassment!</li>
-            <li>No Racism / Hate Speech!</li>
-            <li>HAVE FUN!</li>
-        </ul>
-    </div>
-</section>
-
-<section>
-    <h2>Join the Community!</h2>
-    <div class="box">
-        <p>Get Updates, Find Allies, & Shape The Server’s Future.</p>
-        <div class="buttons">
-            <a class="btn" href="https://discord.gg/Bq7CyBvAAc" target="_blank">Join Discord</a>
-            <a class="btn" href="#" title="Coming Soon">Store (Coming Soon!)</a>
-        </div>
-    </div>
+<section class="reveal">
+<h2>Join the Community</h2>
+<div class="box">
+<div class="buttons">
+<a class="btn" href="https://discord.gg/Bq7CyBvAAc" target="_blank">Join Discord</a>
+<a class="btn" href="#">Store (Coming Soon)</a>
+</div>
+</div>
 </section>
 
 <footer>
-    © 2025 Wild Moloch Factions — Not affiliated with Mojang or Microsoft
+© 2025 Wild Moloch Factions — Not affiliated with Mojang or Microsoft
 </footer>
 
 </body>
