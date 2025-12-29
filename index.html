@@ -112,6 +112,7 @@ h2 {
 }
 
 .status.online { color:#00ff88; text-shadow:0 0 10px #00ff88; }
+.status.offline { color:#ff4444; text-shadow:0 0 10px red; }
 
 .cards {
     display:grid;
@@ -188,7 +189,13 @@ footer {
 </style>
 
 <script>
-const SERVER_IP="WildMolochsVille.aternos.me";
+const SERVER_IP = "WildMolochsVille.aternos.me";
+
+// === MANUAL SERVER STATUS ===
+// Change 'online' to 'offline' if the server is down
+const SERVER_STATUS = "online"; // "online" or "offline"
+const CURRENT_PLAYERS = 1; // current players
+const MAX_PLAYERS = 50; // max players
 
 function copyIP(){
     navigator.clipboard.writeText(SERVER_IP);
@@ -202,6 +209,18 @@ function toggleFaction(id){
     const el=document.getElementById(id);
     el.style.display = el.style.display==="block" ? "none" : "block";
 }
+
+// Update the server status on page load
+window.addEventListener("DOMContentLoaded", () => {
+    const statusEl = document.querySelector(".status");
+    if(SERVER_STATUS === "online"){
+        statusEl.textContent = `● ONLINE — ${CURRENT_PLAYERS}/${MAX_PLAYERS} players`;
+        statusEl.className = "status online";
+    } else {
+        statusEl.textContent = `● OFFLINE — 0/${MAX_PLAYERS} players`;
+        statusEl.className = "status offline";
+    }
+});
 </script>
 </head>
 
@@ -218,7 +237,7 @@ function toggleFaction(id){
 <div class="box" onclick="copyIP()">
 <p><strong>IP:</strong> <span style="color:#ff6666;">WildMolochsVille.aternos.me</span></p>
 <p>Version: Java 1.21.1</p>
-<div class="status offline" id="status">● OFFLINE — 0/50 players</div>
+<div class="status online">● ONLINE — 1/50 players</div>
 <small>Click to copy IP</small>
 </div>
 </section>
