@@ -19,7 +19,6 @@
             overflow-x: hidden;
         }
 
-        /* Ember animation */
         body::before {
             content: "";
             position: fixed;
@@ -119,13 +118,8 @@
         .online { color: #00ff88; }
         .offline { color: #ff4444; }
 
-        ul {
-            padding-left: 22px;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
+        ul { padding-left: 22px; }
+        li { margin-bottom: 10px; }
 
         .buttons {
             display: flex;
@@ -162,9 +156,7 @@
             text-align: center;
         }
 
-        th {
-            background: #2a0000;
-        }
+        th { background: #2a0000; }
 
         footer {
             text-align: center;
@@ -185,20 +177,18 @@
         }
 
         async function fetchStatus() {
+            const statusEl = document.getElementById("status");
             try {
-                const res = await fetch("https://api.mcsrvstat.us/2/" + SERVER_IP);
+                const res = await fetch(`https://api.minetools.eu/ping/${SERVER_IP}`);
                 const data = await res.json();
 
-                const statusEl = document.getElementById("status");
-
-                if (data.online) {
-                    statusEl.innerHTML = 
-                        `<span class="online">● ONLINE</span> — ${data.players.online}/${data.players.max} players`;
+                if (data.status === "OK") {
+                    statusEl.innerHTML = `<span class="online">● ONLINE</span> — ${data.players.online}/${data.players.max} players`;
                 } else {
                     statusEl.innerHTML = `<span class="offline">● OFFLINE</span>`;
                 }
             } catch {
-                document.getElementById("status").innerHTML = "Status unavailable";
+                statusEl.innerHTML = "Status unavailable";
             }
         }
 
@@ -209,7 +199,6 @@
 <body>
 
 <header>
-    <!-- Logo placeholder -->
     <img class="logo" src="logo.png" alt="Wild Moloch Logo">
     <h1>WILD MOLOCH FACTIONS</h1>
     <p>Forge Your Power. Claim Your Dominion.</p>
@@ -221,8 +210,8 @@
         <p><strong>IP:</strong> <span>WildMolochsVille.aternos.me</span></p>
         <p><strong>Version:</strong> Java Edition 1.21.1</p>
         <p><strong>Gamemode:</strong> Factions</p>
-        <div class="status" id="status">Checking server status...</div>
-        <small>Click this box to copy the IP</small>
+        <div class="status" id="status">Checking Server Status...</div>
+        <small>Click This Box To Copy The IP</small>
     </div>
 </section>
 
@@ -230,10 +219,10 @@
     <h2>Why Play Wild Moloch?</h2>
     <div class="box">
         <ul>
-            <li>⚔️ Competitive, progression-based factions</li>
-            <li>🔥 Raiding, alliances, betrayals, domination</li>
-            <li>🛡️ Active staff & zero tolerance for cheaters</li>
-            <li>🌌 Dark fantasy atmosphere & custom balance</li>
+            <li>⚔️ Competitive, Progression-Based Factions</li>
+            <li>🔥 Raiding, Alliances, Betrayals, Domination</li>
+            <li>🛡️ Active Staff & Zero Tolerance For Cheaters</li>
+            <li>🌌 Dark Fantasy Atmosphere & Custom Balance</li>
         </ul>
     </div>
 </section>
@@ -243,7 +232,7 @@
     <div class="box">
         <p>
             Long Ago, The World Shattered Under The Will Of Moloch — An Ancient Force Of
-            Fire, Chaos, & Dominion. Factions Rose From The Ashes, Each Vying For Control
+            Fire, Chaos, & Dominion. Factions Rose From The Ashes, Each Vyig For Control
             Of Cursed Lands Rich With Power.
         </p>
         <p>
@@ -296,7 +285,7 @@
             <li>No Duping, Exploits / Bug Abuse</li>
             <li>Respect Staff & Players!</li>
             <li>No Real-World Threats / Extreme Harassment!</li>
-            <li>No Racism / Hate Speach!</li>
+            <li>No Racism / Hate Speech!</li>
             <li>HAVE FUN!</li>
         </ul>
     </div>
