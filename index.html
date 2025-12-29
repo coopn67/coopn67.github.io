@@ -12,6 +12,7 @@
     --red:#ff3333;
     --dark:#050505;
     --deep:#120000;
+    --glow:0 0 25px rgba(255,60,0,.8);
 }
 
 * { box-sizing:border-box; }
@@ -19,108 +20,168 @@
 body {
     margin:0;
     font-family:'Orbitron',Arial,sans-serif;
-    background:linear-gradient(180deg,#050505,#1a0000);
+    background:radial-gradient(circle at top,#1a0000,#050505 70%);
     color:#e0e0e0;
     overflow-x:hidden;
 }
 
-/* FIRE PARTICLES */
+/* 🔥 EMBERS */
 body::before {
     content:"";
     position:fixed;
     inset:0;
-    background:radial-gradient(circle,rgba(255,60,0,.15) 1px,transparent 1px);
-    background-size:80px 80px;
-    animation:embers 60s linear infinite;
+    background:
+        radial-gradient(circle,rgba(255,80,0,.25) 1px,transparent 2px),
+        radial-gradient(circle,rgba(255,0,0,.15) 1px,transparent 2px);
+    background-size:70px 70px,120px 120px;
+    animation:embers 80s linear infinite;
     pointer-events:none;
+    z-index:-2;
 }
-@keyframes embers { to{background-position:0 -1200px;} }
+
+/* 🌑 VOID PULSE */
+body::after {
+    content:"";
+    position:fixed;
+    inset:-20%;
+    background:radial-gradient(circle,rgba(255,0,0,.12),transparent 60%);
+    animation:voidpulse 18s ease-in-out infinite;
+    pointer-events:none;
+    z-index:-3;
+}
+
+@keyframes embers { to{background-position:0 -1600px,0 -800px;} }
+@keyframes voidpulse {
+    0%,100%{transform:scale(1);opacity:.3;}
+    50%{transform:scale(1.15);opacity:.55;}
+}
 
 header {
     text-align:center;
-    padding:120px 20px;
+    padding:130px 20px;
     background:radial-gradient(circle,#2a0000,#000);
     border-bottom:3px solid #550000;
     position:relative;
 }
+
 header img {
     width:110px;
     position:absolute;
     top:20px;
     left:20px;
+    filter:drop-shadow(0 0 15px red);
 }
+
 header h1 {
-    font-size:4em;
+    font-size:4.2em;
     color:var(--red);
-    text-shadow:0 0 35px red;
+    text-shadow:0 0 45px red,0 0 80px rgba(255,0,0,.4);
 }
-header p { color:#ccc; }
+
+header p {
+    color:#ccc;
+    letter-spacing:1px;
+}
 
 section {
-    max-width:1000px;
+    max-width:1100px;
     margin:auto;
-    padding:70px 20px;
+    padding:80px 20px;
 }
 
 h2 {
     color:#ff4444;
     border-bottom:2px solid #550000;
     padding-bottom:10px;
+    text-shadow:0 0 15px rgba(255,0,0,.6);
 }
 
 .box {
     background:var(--deep);
-    padding:30px;
-    border-radius:14px;
+    padding:32px;
+    border-radius:16px;
     border:1px solid #550000;
-    box-shadow:0 0 30px rgba(255,0,0,.18);
-    margin-top:25px;
+    box-shadow:0 0 40px rgba(255,0,0,.22);
+    margin-top:30px;
+    animation:fadeup .8s ease;
 }
 
-.status.online { color:#00ff88; }
+@keyframes fadeup {
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:none;}
+}
+
+.status.online { color:#00ff88; text-shadow:0 0 10px #00ff88; }
 
 .cards {
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:25px;
 }
 
 .card {
     background:#1a0000;
-    padding:22px;
+    padding:26px;
     border:1px solid #550000;
-    border-radius:12px;
+    border-radius:14px;
     text-align:center;
     cursor:pointer;
+    transition:.35s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,rgba(255,0,0,.35),transparent 70%);
+    opacity:0;
     transition:.3s;
 }
+
+.card:hover::before { opacity:1; }
+
 .card:hover {
-    transform:translateY(-6px);
-    box-shadow:0 0 20px rgba(255,0,0,.6);
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 0 35px rgba(255,0,0,.85);
 }
 
 .faction-details {
     display:none;
-    margin-top:15px;
-    padding:20px;
+    margin-top:18px;
+    padding:22px;
     background:#0c0000;
     border-left:4px solid #ff3333;
+    animation:fadeup .4s ease;
 }
 
-.buttons { display:flex; gap:15px; flex-wrap:wrap; }
+.buttons {
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
 .btn {
-    background:var(--red);
+    background:linear-gradient(135deg,#ff3333,#aa0000);
     color:white;
-    padding:14px 26px;
-    border-radius:8px;
+    padding:16px 30px;
+    border-radius:10px;
     text-decoration:none;
     font-weight:bold;
+    box-shadow:var(--glow);
+    transition:.3s;
 }
-.btn:hover { background:#ff0000; }
+
+.btn:hover {
+    background:linear-gradient(135deg,#ff0000,#ff4444);
+    transform:scale(1.08);
+    box-shadow:0 0 40px red;
+}
 
 footer {
     text-align:center;
-    padding:40px;
+    padding:45px;
     background:#000;
     color:#666;
 }
@@ -149,7 +210,7 @@ function toggleFaction(id){
 <header>
 <img src="logo.png" alt="Logo">
 <h1>WILD MOLOCH FACTIONS</h1>
-<p>Forge Your Power. Claim Your Dominion.</p>
+<p>Power Is Taken. Legends Are Forged.</p>
 </header>
 
 <section>
@@ -166,11 +227,12 @@ function toggleFaction(id){
 <h2>Why Play Wild Moloch?</h2>
 <div class="box">
 <ul>
-<li>🔥 A ruthless factions experience where power is earned, not handed out</li>
-<li>⚔️ Real territorial warfare with lasting consequences</li>
-<li>🩸 Dark, evolving lore that reacts to player domination</li>
-<li>🏰 Bases, alliances, betrayals & server-wide wars</li>
-<li>👑 Reputation matters — names become legends or warnings</li>
+<li>🔥 A brutal factions world where domination shapes the map</li>
+<li>⚔️ Real loss. Real wars. Real consequences.</li>
+<li>🩸 Player-driven history — no scripted outcomes</li>
+<li>🏰 Massive bases, siege warfare, betrayals, alliances</li>
+<li>👑 Power attracts enemies — survival earns legend</li>
+<li>🌑 Dark lore that evolves as factions rise and fall</li>
 </ul>
 </div>
 </section>
@@ -179,27 +241,29 @@ function toggleFaction(id){
 <h2>The Lore of Moloch</h2>
 <div class="box">
 <p>
-Before time was measured, before kingdoms rose and fell, there existed a force known only as
-<strong>Moloch</strong>. Not a god — but a will. An endless hunger for dominance that reshaped the world
-through fire, sacrifice, and conquest.
+Before gods demanded worship, before kings claimed crowns, there was <strong>Moloch</strong>.
+Not a deity — but a force. A primal will born from conflict itself.
 </p>
 
 <p>
-When Moloch’s influence spread, the land fractured. Oceans boiled, mountains split, and nations
-collapsed under their own ambition. Civilization did not fall — it was refined. Only those willing
-to seize power survived the burning.
+Moloch did not create the world. It <em>tested</em> it. Empires rose only to be shattered.
+Civilizations burned not by fate, but by ambition. Every war fed Moloch. Every sacrifice
+strengthened its presence.
 </p>
 
 <p>
-From the ruins emerged factions — warbands bound not by honor, but by survival. Each territory
-claimed feeds Moloch’s will. Each defeat strengthens the world’s cruelty. There are no heroes here.
-Only rulers, rebels, and the forgotten.
+When the Great Collapse came, the land fractured into scorched realms. Seas turned black,
+mountains split open, and survivors learned a brutal truth: mercy was extinction.
 </p>
 
 <p>
-In Wild Moloch, your choices shape history. Empires rise through blood and strategy. Alliances are
-temporary. Betrayal is inevitable. And only those who dominate long enough earn immortality in
-legend.
+From this chaos emerged factions — not heroes, not villains — but conquerors. Each territory
+claimed whispers Moloch’s approval. Each defeat fuels the hunger of the world itself.
+</p>
+
+<p>
+In Wild Moloch, history is not written — it is <strong>taken</strong>. Names become warnings.
+Strongholds become legends. And those who rule long enough are remembered long after they fall.
 </p>
 </div>
 </section>
@@ -212,36 +276,36 @@ legend.
 <div class="card" onclick="toggleFaction('infernal')">
 🔥 Infernal Warbands
 <div id="infernal" class="faction-details">
-<p><strong>Philosophy:</strong> Burn everything. Rule the ashes.</p>
-<p><strong>Playstyle:</strong> Aggressive raiding, overwhelming force.</p>
-<p><strong>Why Choose:</strong> You want fast dominance and fear-based control.</p>
+<p><strong>Philosophy:</strong> Burn first. Rule forever.</p>
+<p><strong>Playstyle:</strong> Relentless raids, scorched-earth warfare.</p>
+<p><strong>Why Choose:</strong> You want fear to open doors before you arrive.</p>
 </div>
 </div>
 
 <div class="card" onclick="toggleFaction('dominion')">
 ⚔️ Iron Dominion
 <div id="dominion" class="faction-details">
-<p><strong>Philosophy:</strong> Discipline over chaos.</p>
-<p><strong>Playstyle:</strong> Defensive strongholds, calculated warfare.</p>
-<p><strong>Why Choose:</strong> You outlast enemies and grind them into submission.</p>
+<p><strong>Philosophy:</strong> Order through absolute control.</p>
+<p><strong>Playstyle:</strong> Fortresses, attrition, calculated conquest.</p>
+<p><strong>Why Choose:</strong> You win wars by outlasting everyone.</p>
 </div>
 </div>
 
 <div class="card" onclick="toggleFaction('bloodbound')">
 🩸 Bloodbound
 <div id="bloodbound" class="faction-details">
-<p><strong>Philosophy:</strong> Strength through sacrifice.</p>
-<p><strong>Playstyle:</strong> High-risk combat, relentless PvP.</p>
-<p><strong>Why Choose:</strong> You thrive in constant war and chaos.</p>
+<p><strong>Philosophy:</strong> Power demands sacrifice.</p>
+<p><strong>Playstyle:</strong> Constant PvP, chaos-driven domination.</p>
+<p><strong>Why Choose:</strong> You live for war and thrive in disorder.</p>
 </div>
 </div>
 
 <div class="card" onclick="toggleFaction('ashen')">
 👁️ Ashen Order
 <div id="ashen" class="faction-details">
-<p><strong>Philosophy:</strong> Knowledge is power.</p>
-<p><strong>Playstyle:</strong> Strategy, manipulation, economic control.</p>
-<p><strong>Why Choose:</strong> You prefer winning before the battle begins.</p>
+<p><strong>Philosophy:</strong> Knowledge is the deadliest weapon.</p>
+<p><strong>Playstyle:</strong> Manipulation, economy, intelligence.</p>
+<p><strong>Why Choose:</strong> You defeat enemies before blades cross.</p>
 </div>
 </div>
 
