@@ -24,7 +24,7 @@ body {
     overflow-x:hidden;
 }
 
-/* 🔥 FIRE PARTICLES */
+/* FIRE PARTICLES */
 body::before {
     content:"";
     position:fixed;
@@ -33,50 +33,15 @@ body::before {
     background-size:80px 80px;
     animation:embers 60s linear infinite;
     pointer-events:none;
-    z-index:0;
 }
 @keyframes embers { to{background-position:0 -1200px;} }
 
-/* 🌫️ SMOKE */
-body::after {
-    content:"";
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle,rgba(255,255,255,.04),transparent 65%);
-    animation:smoke 25s ease-in-out infinite;
-    pointer-events:none;
-    z-index:1;
-}
-@keyframes smoke { 50%{opacity:.3;} }
-
-/* 🎬 INTRO SPLASH */
-#intro {
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:999;
-    animation:introFade 3s forwards 2s;
-}
-#intro h1 {
-    color:var(--red);
-    font-size:4em;
-    text-shadow:0 0 40px red;
-}
-@keyframes introFade {
-    to { opacity:0; visibility:hidden; }
-}
-
-/* HEADER */
 header {
     text-align:center;
     padding:120px 20px;
     background:radial-gradient(circle,#2a0000,#000);
     border-bottom:3px solid #550000;
     position:relative;
-    z-index:2;
 }
 header img {
     width:110px;
@@ -91,21 +56,18 @@ header h1 {
 }
 header p { color:#ccc; }
 
-/* SECTIONS */
 section {
     max-width:1000px;
     margin:auto;
     padding:70px 20px;
-    position:relative;
-    z-index:2;
 }
+
 h2 {
     color:#ff4444;
     border-bottom:2px solid #550000;
     padding-bottom:10px;
 }
 
-/* BOX */
 .box {
     background:var(--deep);
     padding:30px;
@@ -115,62 +77,36 @@ h2 {
     margin-top:25px;
 }
 
-/* SCROLL ANIMATION */
-.reveal {
-    opacity:0;
-    transform:translateY(40px);
-    transition:1s;
-}
-.reveal.active {
-    opacity:1;
-    transform:none;
-}
-
-/* STATUS */
 .status.online { color:#00ff88; }
-.status.offline { color:#ff4444; }
-.status.checking { color:#ffaa00; }
 
-/* FACTION CARDS */
 .cards {
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
 }
+
 .card {
     background:#1a0000;
-    padding:20px;
+    padding:22px;
     border:1px solid #550000;
     border-radius:12px;
     text-align:center;
+    cursor:pointer;
     transition:.3s;
 }
 .card:hover {
     transform:translateY(-6px);
-    box-shadow:0 0 20px rgba(255,0,0,.5);
+    box-shadow:0 0 20px rgba(255,0,0,.6);
 }
 
-/* TIMELINE */
-.timeline {
-    border-left:3px solid #ff3333;
-    padding-left:25px;
-}
-.timeline div {
-    margin-bottom:20px;
-}
-
-/* SECRET LORE */
-.secret {
-    margin-top:15px;
-    color:#ff6666;
-    cursor:pointer;
-}
-.secret-content {
+.faction-details {
     display:none;
-    margin-top:10px;
+    margin-top:15px;
+    padding:20px;
+    background:#0c0000;
+    border-left:4px solid #ff3333;
 }
 
-/* BUTTONS */
 .buttons { display:flex; gap:15px; flex-wrap:wrap; }
 .btn {
     background:var(--red);
@@ -181,20 +117,6 @@ h2 {
     font-weight:bold;
 }
 .btn:hover { background:#ff0000; }
-
-/* AUDIO */
-#audioToggle {
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#ff3333;
-    color:white;
-    border:none;
-    padding:12px;
-    border-radius:50%;
-    cursor:pointer;
-    z-index:10;
-}
 
 footer {
     text-align:center;
@@ -212,34 +134,17 @@ function copyIP(){
     alert("Server IP copied!");
 }
 
-function toggleSecret(){
-    const s=document.getElementById("secretLore");
-    s.style.display = s.style.display==="block"?"none":"block";
-}
-
-function toggleAudio(){
-    const a=document.getElementById("bgAudio");
-    a.paused ? a.play() : a.pause();
-}
-
-/* SCROLL REVEAL */
-window.addEventListener("scroll",()=>{
-    document.querySelectorAll(".reveal").forEach(el=>{
-        if(el.getBoundingClientRect().top < window.innerHeight-100)
-            el.classList.add("active");
+function toggleFaction(id){
+    document.querySelectorAll(".faction-details").forEach(el=>{
+        if(el.id !== id) el.style.display="none";
     });
-});
+    const el=document.getElementById(id);
+    el.style.display = el.style.display==="block" ? "none" : "block";
+}
 </script>
 </head>
 
 <body>
-
-<div id="intro"><h1>WILD MOLOCH</h1></div>
-
-<audio id="bgAudio" loop>
-    <source src="ambient.mp3" type="audio/mpeg">
-</audio>
-<button id="audioToggle" onclick="toggleAudio()">🎵</button>
 
 <header>
 <img src="logo.png" alt="Logo">
@@ -247,7 +152,7 @@ window.addEventListener("scroll",()=>{
 <p>Forge Your Power. Claim Your Dominion.</p>
 </header>
 
-<section class="reveal">
+<section>
 <h2>Server Information</h2>
 <div class="box" onclick="copyIP()">
 <p><strong>IP:</strong> <span style="color:#ff6666;">WildMolochsVille.aternos.me</span></p>
@@ -257,54 +162,93 @@ window.addEventListener("scroll",()=>{
 </div>
 </section>
 
-<section class="reveal">
+<section>
 <h2>Why Play Wild Moloch?</h2>
 <div class="box">
 <ul>
-<li>🔥 High-risk, high-reward factions</li>
-<li>⚔️ Real domination, no hand-holding</li>
-<li>🩸 Dark lore-driven progression</li>
-<li>👑 Status, fear, reputation matter</li>
-<li>🏰 Wars that shape the world</li>
+<li>🔥 A ruthless factions experience where power is earned, not handed out</li>
+<li>⚔️ Real territorial warfare with lasting consequences</li>
+<li>🩸 Dark, evolving lore that reacts to player domination</li>
+<li>🏰 Bases, alliances, betrayals & server-wide wars</li>
+<li>👑 Reputation matters — names become legends or warnings</li>
 </ul>
 </div>
 </section>
 
-<section class="reveal">
-<h2>Factions of the Realm</h2>
-<div class="cards">
-<div class="card">🔥 Infernal Warbands</div>
-<div class="card">⚔️ Iron Dominion</div>
-<div class="card">🩸 Bloodbound</div>
-<div class="card">👁️ Ashen Order</div>
-</div>
-</section>
-
-<section class="reveal">
+<section>
 <h2>The Lore of Moloch</h2>
 <div class="box">
-<p>Moloch is not worshipped — he is endured.</p>
-<p>When the world burned, only the ruthless survived.</p>
+<p>
+Before time was measured, before kingdoms rose and fell, there existed a force known only as
+<strong>Moloch</strong>. Not a god — but a will. An endless hunger for dominance that reshaped the world
+through fire, sacrifice, and conquest.
+</p>
 
-<div class="secret" onclick="toggleSecret()">👁️ Reveal Forbidden Lore</div>
-<div class="secret-content" id="secretLore">
-<p>Moloch does not choose champions. He consumes the weak until only tyrants remain.</p>
-</div>
+<p>
+When Moloch’s influence spread, the land fractured. Oceans boiled, mountains split, and nations
+collapsed under their own ambition. Civilization did not fall — it was refined. Only those willing
+to seize power survived the burning.
+</p>
+
+<p>
+From the ruins emerged factions — warbands bound not by honor, but by survival. Each territory
+claimed feeds Moloch’s will. Each defeat strengthens the world’s cruelty. There are no heroes here.
+Only rulers, rebels, and the forgotten.
+</p>
+
+<p>
+In Wild Moloch, your choices shape history. Empires rise through blood and strategy. Alliances are
+temporary. Betrayal is inevitable. And only those who dominate long enough earn immortality in
+legend.
+</p>
 </div>
 </section>
 
-<section class="reveal">
-<h2>Rank Ascension</h2>
-<div class="box timeline">
-<div>🔰 VIP — Marked Initiate</div>
-<div>⚔️ Acolyte — Proven Blood</div>
-<div>🔥 Inferno — Living Weapon</div>
-<div>👑 Overlord — Absolute Ruler</div>
-<div>🜏 Imperator — Myth Made Flesh</div>
+<section>
+<h2>Factions of the Realm</h2>
+
+<div class="cards">
+
+<div class="card" onclick="toggleFaction('infernal')">
+🔥 Infernal Warbands
+<div id="infernal" class="faction-details">
+<p><strong>Philosophy:</strong> Burn everything. Rule the ashes.</p>
+<p><strong>Playstyle:</strong> Aggressive raiding, overwhelming force.</p>
+<p><strong>Why Choose:</strong> You want fast dominance and fear-based control.</p>
+</div>
+</div>
+
+<div class="card" onclick="toggleFaction('dominion')">
+⚔️ Iron Dominion
+<div id="dominion" class="faction-details">
+<p><strong>Philosophy:</strong> Discipline over chaos.</p>
+<p><strong>Playstyle:</strong> Defensive strongholds, calculated warfare.</p>
+<p><strong>Why Choose:</strong> You outlast enemies and grind them into submission.</p>
+</div>
+</div>
+
+<div class="card" onclick="toggleFaction('bloodbound')">
+🩸 Bloodbound
+<div id="bloodbound" class="faction-details">
+<p><strong>Philosophy:</strong> Strength through sacrifice.</p>
+<p><strong>Playstyle:</strong> High-risk combat, relentless PvP.</p>
+<p><strong>Why Choose:</strong> You thrive in constant war and chaos.</p>
+</div>
+</div>
+
+<div class="card" onclick="toggleFaction('ashen')">
+👁️ Ashen Order
+<div id="ashen" class="faction-details">
+<p><strong>Philosophy:</strong> Knowledge is power.</p>
+<p><strong>Playstyle:</strong> Strategy, manipulation, economic control.</p>
+<p><strong>Why Choose:</strong> You prefer winning before the battle begins.</p>
+</div>
+</div>
+
 </div>
 </section>
 
-<section class="reveal">
+<section>
 <h2>Join the Community</h2>
 <div class="box">
 <div class="buttons">
