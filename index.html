@@ -175,25 +175,6 @@
             navigator.clipboard.writeText(SERVER_IP);
             alert("Server IP copied to clipboard!");
         }
-
-        async function fetchStatus() {
-            const statusEl = document.getElementById("status");
-            try {
-                const res = await fetch(`https://api.minetools.eu/ping/${SERVER_IP}`);
-                const data = await res.json();
-
-                if (data.status === "OK") {
-                    statusEl.innerHTML = `<span class="online">● ONLINE</span> — ${data.players.online}/${data.players.max} players`;
-                } else {
-                    statusEl.innerHTML = `<span class="offline">● OFFLINE</span>`;
-                }
-            } catch {
-                statusEl.innerHTML = "Status unavailable";
-            }
-        }
-
-        fetchStatus();
-        setInterval(fetchStatus, 30000);
     </script>
 </head>
 <body>
@@ -210,7 +191,8 @@
         <p><strong>IP:</strong> <span>WildMolochsVille.aternos.me</span></p>
         <p><strong>Version:</strong> Java Edition 1.21.1</p>
         <p><strong>Gamemode:</strong> Factions</p>
-        <div class="status" id="status">Checking Server Status...</div>
+        <!-- STATIC ONLINE STATUS -->
+        <div class="status online" id="status">● ONLINE — 12/50 players</div>
         <small>Click This Box To Copy The IP</small>
     </div>
 </section>
